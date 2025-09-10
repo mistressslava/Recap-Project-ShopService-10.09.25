@@ -27,7 +27,7 @@ class ShopServiceTest {
     void addOrderTest_whenInvalidProductId_expectNull() {
         //GIVEN
         ShopService shopService = new ShopService();
-        List<String> productsIds = List.of("1", "2");
+        List<String> productsIds = List.of("1","4");
 
         //WHEN
         Order actual = shopService.addOrder(productsIds);
@@ -56,15 +56,15 @@ class ShopServiceTest {
         //GIVEN
         ShopService shopService = new ShopService();
         List<String> productIds = List.of("1");
-        Order expextedOrder = shopService.addOrder(productIds);
         OrderStatus status = OrderStatus.PROCESSING;
 
         //WHEN
-        List<Order> actual = shopService.getListOfOrdersByStatus(status);
+        Order expextedOrder = shopService.addOrder(productIds);
+        List<Order> expected = List.of(expextedOrder);
 
         //THEN
-        List<Order> expected = List.of(expextedOrder);
-        assertEquals(actual, expected);
+        List<Order> actual = shopService.getListOfOrdersByStatus(status);
+        assertEquals(expected, actual);
     }
 
     @Test
