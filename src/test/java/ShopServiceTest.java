@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,12 +15,13 @@ class ShopServiceTest {
         //GIVEN
         ShopService shopService = new ShopService();
         List<String> productsIds = List.of("1");
+        Instant time = Instant.now().truncatedTo(ChronoUnit.MINUTES);
 
         //WHEN
         Order actual = shopService.addOrder(productsIds);
 
         //THEN
-        Order expected = new Order("-1", List.of(new Product("1", "Apfel")));
+        Order expected = new Order("-1", List.of(new Product("1", "Apfel")), time);
         assertEquals(expected.products(), actual.products());
         assertNotNull(expected.id());
     }
@@ -100,11 +103,12 @@ class ShopServiceTest {
     void updateOrderInDelivery() {
         //GIVEN
         ShopService shopService = new ShopService();
+        Instant time = Instant.now().truncatedTo(ChronoUnit.MINUTES);
         Order order = shopService.addOrder(List.of("1"));
         OrderStatus status = OrderStatus.IN_DELIVERY;
 
         //WHEN
-        Order expected = new Order("1", order.products(), OrderStatus.IN_DELIVERY);
+        Order expected = new Order("1", order.products(), OrderStatus.IN_DELIVERY, time);
 
         //THEN
         Order actual = shopService.updateOrder(order, status);

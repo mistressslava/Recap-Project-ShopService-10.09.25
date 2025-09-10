@@ -1,6 +1,8 @@
 import lombok.Data;
 import lombok.With;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class ShopService {
@@ -19,7 +21,7 @@ public class ShopService {
             products.add(productToOrder.get());
         }
 
-        Order newOrder = new Order(UUID.randomUUID().toString(), products);
+        Order newOrder = new Order(UUID.randomUUID().toString(), products, Instant.now().truncatedTo(ChronoUnit.MINUTES));
 
         return orderRepo.addOrder(newOrder);
     }

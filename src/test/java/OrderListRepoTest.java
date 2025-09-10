@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +13,10 @@ class OrderListRepoTest {
     void getOrders() {
         //GIVEN
         OrderListRepo repo = new OrderListRepo();
+        Instant time = Instant.now().truncatedTo(ChronoUnit.MINUTES);
 
         Product product = new Product("1", "Apfel");
-        Order newOrder = new Order("1", List.of(product));
+        Order newOrder = new Order("1", List.of(product), time);
         repo.addOrder(newOrder);
 
         //WHEN
@@ -22,7 +25,7 @@ class OrderListRepoTest {
         //THEN
         List<Order> expected = new ArrayList<>();
         Product product1 = new Product("1", "Apfel");
-        expected.add(new Order("1", List.of(product1)));
+        expected.add(new Order("1", List.of(product1), time));
 
         assertEquals(actual, expected);
     }
@@ -31,9 +34,10 @@ class OrderListRepoTest {
     void getOrderById() {
         //GIVEN
         OrderListRepo repo = new OrderListRepo();
+        Instant time = Instant.now().truncatedTo(ChronoUnit.MINUTES);
 
         Product product = new Product("1", "Apfel");
-        Order newOrder = new Order("1", List.of(product));
+        Order newOrder = new Order("1", List.of(product), time);
         repo.addOrder(newOrder);
 
         //WHEN
@@ -41,7 +45,7 @@ class OrderListRepoTest {
 
         //THEN
         Product product1 = new Product("1", "Apfel");
-        Order expected = new Order("1", List.of(product1));
+        Order expected = new Order("1", List.of(product1), time);
 
         assertEquals(actual, expected);
     }
@@ -50,15 +54,16 @@ class OrderListRepoTest {
     void addOrder() {
         //GIVEN
         OrderListRepo repo = new OrderListRepo();
+        Instant time = Instant.now().truncatedTo(ChronoUnit.MINUTES);
         Product product = new Product("1", "Apfel");
-        Order newOrder = new Order("1", List.of(product));
+        Order newOrder = new Order("1", List.of(product), time);
 
         //WHEN
         Order actual = repo.addOrder(newOrder);
 
         //THEN
         Product product1 = new Product("1", "Apfel");
-        Order expected = new Order("1", List.of(product1));
+        Order expected = new Order("1", List.of(product1), time);
         assertEquals(actual, expected);
         assertEquals(repo.getOrderById("1").get(), expected);
     }
@@ -76,9 +81,10 @@ class OrderListRepoTest {
     void addOrderNotExist() {
         //GIVEN
         OrderListRepo repo = new OrderListRepo();
+        Instant time = Instant.now().truncatedTo(ChronoUnit.MINUTES);
 
         //THEN
-        assertThrows(NoSuchOrderException.class, () -> repo.addOrder(new Order("2", null)));
+        assertThrows(NoSuchOrderException.class, () -> repo.addOrder(new Order("2", null, time)));
     }
 
     @Test
