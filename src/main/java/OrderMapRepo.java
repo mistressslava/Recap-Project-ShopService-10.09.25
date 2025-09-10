@@ -15,6 +15,9 @@ public class OrderMapRepo implements OrderRepo{
 
     @Override
     public Order addOrder(Order newOrder) {
+        if (newOrder == null || newOrder.id().isBlank() || newOrder.products() == null) {
+            throw new NoSuchOrderException("Such order does not exist!");
+        }
         orders.put(newOrder.id(), newOrder);
         return newOrder;
     }

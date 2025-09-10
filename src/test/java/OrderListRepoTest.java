@@ -37,7 +37,7 @@ class OrderListRepoTest {
         repo.addOrder(newOrder);
 
         //WHEN
-        Order actual = repo.getOrderById("1").get();
+        Order actual = repo.getOrderById("1").orElseThrow(() -> new NoSuchOrderException("No such Order"));
 
         //THEN
         Product product1 = new Product("1", "Apfel");
@@ -61,6 +61,24 @@ class OrderListRepoTest {
         Order expected = new Order("1", List.of(product1));
         assertEquals(actual, expected);
         assertEquals(repo.getOrderById("1").get(), expected);
+    }
+
+    @Test
+    void addOrderNull() {
+        //GIVEN
+        OrderListRepo repo = new OrderListRepo();
+
+        //THEN
+        assertThrows(NoSuchOrderException.class, () -> repo.addOrder(null));
+    }
+
+    @Test
+    void addOrderNotExist() {
+        //GIVEN
+        OrderListRepo repo = new OrderListRepo();
+
+        //THEN
+        assertThrows(NoSuchOrderException.class, () -> repo.addOrder(new Order("2", null)));
     }
 
     @Test

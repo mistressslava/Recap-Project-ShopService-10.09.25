@@ -19,6 +19,9 @@ public class OrderListRepo implements OrderRepo{
     }
 
     public Order addOrder(Order newOrder) {
+        if(newOrder == null || newOrder.id().isBlank() || newOrder.products() == null) {
+            throw new NoSuchOrderException("Such order does not exist");
+        }
         orders.add(newOrder);
         return newOrder;
     }
