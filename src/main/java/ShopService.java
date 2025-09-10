@@ -1,10 +1,7 @@
 import lombok.Data;
 import lombok.With;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class ShopService {
     private ProductRepo productRepo = new ProductRepo();
@@ -32,5 +29,18 @@ public class ShopService {
         return orderRepo.getOrders().stream()
                 .filter(order -> order.orderStatus().equals(orderStatus))
                 .toList();
+    }
+    public Order updateOrder(Order order, OrderStatus orderStatus) {
+        if (order == null || order.id() == null || order.id().isBlank()|| orderStatus == null) {
+            throw new NoSuchOrderException("Such order does not exist");
+        }
+
+        Order orderForChanges = orderRepo.getOrderById(order.id()).orElseThrow(
+                () -> new NoSuchElementException("Order with id: " + order.id() + "does not exist!"));
+
+        Order updatedOrder = orderForChanges.withOrderStatus(orderStatus);
+        orderRepo.addOrder(updatedOrder);
+
+        return updatedOrder;
     }
 }

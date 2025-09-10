@@ -1,6 +1,7 @@
 import lombok.Builder;
 import lombok.With;
 
+import java.time.Instant;
 import java.util.List;
 
 @With
@@ -8,9 +9,10 @@ import java.util.List;
 public record Order(
         String id,
         List<Product> products,
-        OrderStatus orderStatus
+        OrderStatus orderStatus,
+        Instant orderDate
 ) {
-    public Order(String id, List<Product> products) {
-        this(id, products, OrderStatus.PROCESSING);
+    public Order(String id, List<Product> products, Instant orderDate) {
+        this(id, products, OrderStatus.PROCESSING, orderDate);
     }
 }

@@ -96,6 +96,21 @@ class ShopServiceTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void updateOrderInDelivery() {
+        //GIVEN
+        ShopService shopService = new ShopService();
+        Order order = shopService.addOrder(List.of("1"));
+        OrderStatus status = OrderStatus.IN_DELIVERY;
+
+        //WHEN
+        Order expected = new Order("1", order.products(), OrderStatus.IN_DELIVERY);
+
+        //THEN
+        Order actual = shopService.updateOrder(order, status);
+        assertEquals(expected.orderStatus(), actual.orderStatus());
+    }
+
 
 //    @Test
 //    void getListOfProductsByStatusCompleted() {
