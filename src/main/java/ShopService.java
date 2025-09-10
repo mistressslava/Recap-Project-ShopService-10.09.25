@@ -1,3 +1,6 @@
+import lombok.Data;
+import lombok.With;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -5,6 +8,8 @@ import java.util.UUID;
 public class ShopService {
     private ProductRepo productRepo = new ProductRepo();
     private OrderRepo orderRepo = new OrderMapRepo();
+
+    public ShopService() {}
 
     public Order addOrder(List<String> productIds) {
         List<Product> products = new ArrayList<>();
@@ -21,4 +26,12 @@ public class ShopService {
 
         return orderRepo.addOrder(newOrder);
     }
+
+    public List<Order> getListOfOrdersByStatus(OrderStatus orderStatus) {
+
+        return orderRepo.getOrders().stream()
+                .filter(order -> order.orderStatus().equals(orderStatus))
+                .toList();
+    }
+
 }
