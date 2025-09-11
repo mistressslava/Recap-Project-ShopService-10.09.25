@@ -1,15 +1,18 @@
-import lombok.Data;
-import lombok.With;
+import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+@RequiredArgsConstructor
 public class ShopService {
     private ProductRepo productRepo = new ProductRepo();
     private OrderRepo orderRepo = new OrderMapRepo();
 
-    public ShopService() {}
+    public ShopService(ProductRepo productRepo, OrderRepo orderRepo) {
+        this.productRepo = productRepo;
+        this.orderRepo = orderRepo;
+    }
 
     public Order addOrder(List<String> productIds) {
         List<Product> products = new ArrayList<>();
@@ -45,4 +48,8 @@ public class ShopService {
 
         return updatedOrder;
     }
+
+     public List<Order> getOrders() {
+        return orderRepo.getOrders();
+     }
 }
